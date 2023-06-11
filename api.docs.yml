@@ -1,0 +1,259 @@
+openapi: 3.0.3
+info:
+  title: Kalambury
+  description: localhost:8080
+  version: 1.0.0
+tags:
+  - name: category
+    description: Categories for slogans
+  - name: slogan
+paths:
+  /category/{id}:
+    get:
+      tags:
+        - category
+      summary: Request category by ID
+      operationId: get-category-by-id
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: Category id
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '500':
+          description: Internal error
+    delete:
+      tags:
+        - category
+      summary: Delete category by ID
+      operationId: delete-category-by-id
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: Category id
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '500':
+          description: Internal error
+        
+  /category:
+    get:
+      tags:
+        - category
+      summary: Request all categories
+      operationId: get-all-categories
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'          
+        '500':
+          description: Internal error
+    post:
+      tags:
+        - category
+      summary: Add category
+      operationId: post-category
+      requestBody: 
+        description: Category
+        content: 
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses: 
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '405':
+          description: Invalid input
+        '500':
+          description: Internal error
+    put:
+      tags:
+        - category
+      summary: Update category
+      operationId: put-category
+      requestBody: 
+        description: Category
+        content: 
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses: 
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '405':
+          description: Invalid input
+        '500':
+          description: Internal error
+  /slogan:
+    post:
+      tags:
+        - slogan
+      summary: Add slogan
+      operationId: post-slogan
+      requestBody: 
+        description: Slogan details
+        content: 
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Slogan'
+      responses: 
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Slogan'
+        '500':
+          description: Internal error
+    put:
+      tags:
+        - slogan
+      summary: Update slogan
+      operationId: update-slogan
+      requestBody: 
+        description: Slogan details
+        content: 
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Slogan'
+      responses: 
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Slogan'
+        '500':
+          description: Internal error
+    get:
+      tags:
+        - slogan
+      summary: Get random slogan
+      operationId: get-random-slogan
+      responses: 
+        '200':
+          description: Successful operation
+        '500':
+          description: Internal error
+  /slogan/{id}:
+    get:
+      tags:
+        - slogan
+      summary: Request slogans by category ID
+      operationId: get-slogans-by-category-id
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: Category id
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Slogan'
+        '500':
+          description: Internal error
+    delete:
+      tags:
+        - slogan
+      summary: Delete slogan by ID
+      operationId: delete-slogan-by-id
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: Slogan ID
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Slogan'
+        '500':
+          description: Internal error
+  /slogan/all:
+    get:
+      tags:
+        - slogan
+      summary: Request all slogans
+      operationId: get-all-slogans
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Slogan'
+        '500':
+          description: Internal error
+          
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: f6014d90-088c-11ee-be56-0242ac120002
+        name:
+          type: string
+          example: Animals
+    Slogan:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: f6014d90-088c-11ee-be56-0242ac120002
+        name:
+          type: string
+          example: Elephant
+        categoryId:
+          type: string
+          format: uuid
+          example: f6014d90-088c-11ee-be56-0242ac120002
