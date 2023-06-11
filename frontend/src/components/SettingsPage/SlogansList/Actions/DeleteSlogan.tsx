@@ -9,15 +9,15 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from 'react';
-import { Category } from '../../../../feature/services/types/Category';
-import { useDeleteCategoryMutation } from '../../../../feature/services/categoryApi';
+import { Slogan } from '../../../../feature/services/types/Slogan';
+import { useDeleteSloganMutation } from '../../../../feature/services/sloganApi';
 
-const DeleteCategory = (category: Category) => {
+const DeleteSlogan = (slogan: Slogan) => {
   const [open, setOpen] = useState(false);
-  const [deleteCategory] = useDeleteCategoryMutation();
+  const [deleteSlogan] = useDeleteSloganMutation();
 
   const handleDelete = () => {
-    deleteCategory(category._id ?? '');
+    deleteSlogan(slogan._id ?? '');
     handleClose();
   };
 
@@ -35,10 +35,10 @@ const DeleteCategory = (category: Category) => {
         <DeleteIcon />
       </IconButton>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Delete category: {category.name}</DialogTitle>
+        <DialogTitle>Delete slogan: {slogan.name}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure, you want to delete this category? All slogans related to it will be also
+            Are you sure, you want to delete this slogan? All slogans related to it will be also
             deleted
           </DialogContentText>
         </DialogContent>
@@ -53,4 +53,4 @@ const DeleteCategory = (category: Category) => {
   );
 };
 
-export default DeleteCategory;
+export default DeleteSlogan;

@@ -7,9 +7,10 @@ import {
   TextField
 } from '@mui/material';
 import { useState } from 'react';
-import { useAddCategoryMutation } from '../../../../feature/services/api';
+import { useAddCategoryMutation } from '../../../../feature/services/categoryApi';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Category } from '../../../../feature/services/types/Category';
+import AddIcon from '@mui/icons-material/Add';
 
 const AddCategory = () => {
   const [addCategory] = useAddCategoryMutation();
@@ -31,7 +32,7 @@ const AddCategory = () => {
 
   return (
     <>
-      <Button size="small" variant="outlined" onClick={handleOpen}>
+      <Button size="small" variant="outlined" startIcon={<AddIcon />} onClick={handleOpen}>
         Add Category
       </Button>
       <Dialog open={open} onClose={handleClose}>

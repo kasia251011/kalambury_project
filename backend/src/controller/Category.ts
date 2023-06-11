@@ -37,3 +37,10 @@ export const updateCategory = (req: Request, res: Response) => {
     .then((category) => { res.status(201).json( category ) })
     .catch((error) => { res.status(500).json( error ) })
 };
+
+export const deleteCategory = async (req: Request, res: Response) => {
+
+  return Category.findByIdAndDelete(req.params.id)
+  .then((category) => { res.status(201).json( category ) })
+  .catch((error) => { res.status(500).json({ error }) })
+};

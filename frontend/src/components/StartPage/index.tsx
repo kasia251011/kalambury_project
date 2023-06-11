@@ -1,14 +1,12 @@
 import { Box, Button, IconButton, Typography } from '@mui/material';
 import './style.scss';
 import { useEffect, useState } from 'react';
-import {
-  useGetCategoryByIdQuery,
-  useGetJokeQuery,
-  useGetSloganQuery
-} from '../../feature/services/api';
+import { useGetCategoryByIdQuery } from '../../feature/services/categoryApi';
 import { RefreshOutlined } from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useNavigate } from 'react-router-dom';
+import { useGetJokeQuery } from '../../feature/services/jokesApi';
+import { useGetSloganQuery } from '../../feature/services/sloganApi';
 
 const StartPage = () => {
   const { data: joke, isError, refetch: refetchJoke } = useGetJokeQuery();

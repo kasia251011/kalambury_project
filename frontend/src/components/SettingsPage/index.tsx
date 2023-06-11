@@ -1,6 +1,6 @@
 import { Box, IconButton, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import CategoriesList from './CategoriesList';
 
 const SettingsPage = () => {
@@ -18,7 +18,10 @@ const SettingsPage = () => {
         <Typography marginBottom="25px" variant="subtitle2">
           Manage Categories And Slogans
         </Typography>
-        <CategoriesList />
+        <Box display="flex" gap="25px">
+          <CategoriesList />
+          <Outlet />
+        </Box>
       </Box>
     </Box>
   );

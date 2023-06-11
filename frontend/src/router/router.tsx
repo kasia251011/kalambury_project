@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import StartPage from '../components/StartPage';
 import SettingsPage from '../components/SettingsPage';
+import SlogansList from '../components/SettingsPage/SlogansList';
 
 const router = createBrowserRouter([
   {
@@ -9,7 +10,13 @@ const router = createBrowserRouter([
   },
   {
     path: '/settings',
-    element: <SettingsPage />
+    element: <SettingsPage />,
+    children: [
+      {
+        path: '/settings/:id',
+        element: <SlogansList />
+      }
+    ]
   }
 ]);
 

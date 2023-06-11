@@ -21,6 +21,13 @@ export const getAllSlogans = async (req: Request, res: Response) => {
   .catch((error) => { res.status(500).json({ error }) })
 };
 
+export const getAllSlogansByCategory = async (req: Request, res: Response) => {
+
+  return SloganSchema.find({categoryId: req.params.id})
+  .then((slogan) => { res.status(201).json( slogan ) })
+  .catch((error) => { res.status(500).json({ error }) })
+};
+
 export const addSlogan = (req: Request, res: Response) => {
   const slogan = new Slogan({
     id: new mongoose.Types.ObjectId(),
@@ -30,4 +37,21 @@ export const addSlogan = (req: Request, res: Response) => {
   return slogan.save()
     .then((slogan) => { res.status(201).json( slogan ) })
     .catch((error) => { res.status(500).json( error ) })
+};
+
+export const updateSlogan = (req: Request, res: Response) => {
+  const slogan = new Slogan({
+    ...req.body
+  })
+
+  return Slogan.findByIdAndUpdate(slogan.id, slogan)
+    .then((slogan) => { res.status(201).json( slogan ) })
+    .catch((error) => { res.status(500).json( error ) })
+};
+
+export const deleteSlogan = async (req: Request, res: Response) => {
+
+  return SloganSchema.findByIdAndDelete(req.params.id)
+  .then((slogan) => { res.status(201).json( slogan ) })
+  .catch((error) => { res.status(500).json({ error }) })
 };

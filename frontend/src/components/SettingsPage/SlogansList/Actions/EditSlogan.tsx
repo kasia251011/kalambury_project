@@ -8,16 +8,17 @@ import {
   TextField
 } from '@mui/material';
 import { useState } from 'react';
+// import { useAddSloganMutation, useGetSloganByIdQuery } from '../../../../feature/services/api';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Category } from '../../../../feature/services/types/Category';
+import { Slogan } from '../../../../feature/services/types/Slogan';
 import EditIcon from '@mui/icons-material/Edit';
-import { useUpdateCategoryMutation } from '../../../../feature/services/categoryApi';
+import { useUpdateSloganMutation } from '../../../../feature/services/sloganApi';
 
-const EditCategory = (category: Category) => {
-  const [updateCategory] = useUpdateCategoryMutation();
-  const { register, handleSubmit } = useForm<Category>({
+const EditSlogan = (slogan: Slogan) => {
+  const [updateSlogan] = useUpdateSloganMutation();
+  const { register, handleSubmit } = useForm<Slogan>({
     defaultValues: {
-      name: category.name
+      name: slogan.name
     }
   });
   const [open, setOpen] = useState(false);
@@ -30,9 +31,10 @@ const EditCategory = (category: Category) => {
     setOpen(false);
   };
 
-  const handleSave: SubmitHandler<Category> = (newCategory: Category) => {
-    newCategory._id = category._id;
-    updateCategory(newCategory);
+  const handleSave: SubmitHandler<Slogan> = (newSlogan: Slogan) => {
+    newSlogan._id = slogan._id;
+    newSlogan.categoryId = slogan.categoryId;
+    updateSlogan(newSlogan);
     setOpen(false);
   };
 
@@ -43,13 +45,13 @@ const EditCategory = (category: Category) => {
       </IconButton>
       <Dialog open={open} onClose={handleClose}>
         <form onSubmit={handleSubmit(handleSave)}>
-          <DialogTitle>Edit Category</DialogTitle>
+          <DialogTitle>Edit Slogan</DialogTitle>
           <DialogContent>
             <TextField
               {...register('name')}
               autoFocus
               margin="dense"
-              label="Category Name"
+              label="Slogan Name"
               fullWidth
               variant="outlined"
             />
@@ -64,4 +66,4 @@ const EditCategory = (category: Category) => {
   );
 };
 
-export default EditCategory;
+export default EditSlogan;

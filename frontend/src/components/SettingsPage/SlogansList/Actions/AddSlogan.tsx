@@ -4,23 +4,20 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  IconButton,
   TextField
 } from '@mui/material';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Category } from '../../../../feature/services/types/Category';
-import EditIcon from '@mui/icons-material/Edit';
-import { useUpdateCategoryMutation } from '../../../../feature/services/categoryApi';
+import { Slogan } from '../../../../feature/services/types/Slogan';
+import AddIcon from '@mui/icons-material/Add';
+import { useAddSloganMutation } from '../../../../feature/services/sloganApi';
+import { useParams } from 'react-router-dom';
 
-const EditCategory = (category: Category) => {
-  const [updateCategory] = useUpdateCategoryMutation();
-  const { register, handleSubmit } = useForm<Category>({
-    defaultValues: {
-      name: category.name
-    }
-  });
+const AddSlogan = () => {
+  const [addSlogan] = useAddSloganMutation();
+  const { register, handleSubmit } = useForm<Slogan>();
   const [open, setOpen] = useState(false);
+  const { id } = useParams<string>();
 
   const handleOpen = () => {
     setOpen(true);
@@ -30,26 +27,26 @@ const EditCategory = (category: Category) => {
     setOpen(false);
   };
 
-  const handleSave: SubmitHandler<Category> = (newCategory: Category) => {
-    newCategory._id = category._id;
-    updateCategory(newCategory);
+  const handleSave: SubmitHandler<Slogan> = (slogan: Slogan) => {
     setOpen(false);
+    slogan.categoryId = id ?? '';
+    addSlogan(slogan);
   };
 
   return (
     <>
-      <IconButton edge="end" sx={{ marginRight: '10px' }} onClick={handleOpen}>
-        <EditIcon />
-      </IconButton>
+      <Button size="small" variant="outlined" startIcon={<AddIcon />} onClick={handleOpen}>
+        Add Slogan
+      </Button>
       <Dialog open={open} onClose={handleClose}>
         <form onSubmit={handleSubmit(handleSave)}>
-          <DialogTitle>Edit Category</DialogTitle>
+          <DialogTitle>Enter a new slogan name!</DialogTitle>
           <DialogContent>
             <TextField
               {...register('name')}
               autoFocus
               margin="dense"
-              label="Category Name"
+              label="Slogan Name"
               fullWidth
               variant="outlined"
             />
@@ -64,4 +61,4 @@ const EditCategory = (category: Category) => {
   );
 };
 
-export default EditCategory;
+export default AddSlogan;
