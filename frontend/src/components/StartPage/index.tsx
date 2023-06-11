@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, IconButton, Typography } from '@mui/material';
 import './style.scss';
 import { useEffect, useState } from 'react';
 import {
@@ -7,8 +7,8 @@ import {
   useGetSloganQuery
 } from '../../feature/services/api';
 import { RefreshOutlined } from '@mui/icons-material';
-import AddCategory from './AddCategory';
-import AddSlogan from './AddSlogan';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { useNavigate } from 'react-router-dom';
 
 const StartPage = () => {
   const { data: joke, isError, refetch: refetchJoke } = useGetJokeQuery();
@@ -17,6 +17,7 @@ const StartPage = () => {
   const [gameStatus, setGameStatus] = useState<'START' | 'STOP'>('STOP');
   const [time, setTime] = useState('2:00');
   const [timeInterval, setTimeInterval] = useState<any>();
+  const navigate = useNavigate();
 
   const startGame = () => {
     let totalSeconds = 119;
@@ -62,10 +63,9 @@ const StartPage = () => {
             Change
           </Button>
         ) : (
-          <Box display="flex" gap="10px">
-            <AddCategory />
-            <AddSlogan />
-          </Box>
+          <IconButton color="primary" onClick={() => navigate('/settings')}>
+            <SettingsIcon />
+          </IconButton>
         )}
       </Box>
       {gameStatus === 'STOP' ? (

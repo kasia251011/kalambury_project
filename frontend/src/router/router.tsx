@@ -1,10 +1,15 @@
 import { createBrowserRouter } from 'react-router-dom';
-import App from '../components/App';
+import StartPage from '../components/StartPage';
+import SettingsPage from '../components/SettingsPage';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />
+    element: <StartPage />
+  },
+  {
+    path: '/settings',
+    element: <SettingsPage />
   }
 ]);
 

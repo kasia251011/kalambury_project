@@ -3,18 +3,23 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
+  IconButton,
   TextField
 } from '@mui/material';
 import { useState } from 'react';
-import { useAddCategoryMutation } from '../../../feature/services/api';
+// import { useAddCategoryMutation, useGetCategoryByIdQuery } from '../../../../feature/services/api';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Category } from '../../../feature/services/types/Category';
+import { Category } from '../../../../feature/services/types/Category';
+import EditIcon from '@mui/icons-material/Edit';
 
-const AddCategory = () => {
-  const [addCategory] = useAddCategoryMutation();
-  const { register, handleSubmit } = useForm<Category>();
+const EditCategory = (category: Category) => {
+  // const [addCategory] = useAddCategoryMutation();
+  const { register, handleSubmit } = useForm<Category>({
+    defaultValues: {
+      name: category.name
+    }
+  });
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -27,19 +32,19 @@ const AddCategory = () => {
 
   const handleSave: SubmitHandler<Category> = (category: Category) => {
     setOpen(false);
-    addCategory(category);
+    //TODO: Save Category
+    console.log('Category saved!', category.name);
   };
 
   return (
     <>
-      <Button variant="outlined" onClick={handleOpen}>
-        Add Category
-      </Button>
+      <IconButton edge="end" sx={{ marginRight: '10px' }} onClick={handleOpen}>
+        <EditIcon />
+      </IconButton>
       <Dialog open={open} onClose={handleClose}>
         <form onSubmit={handleSubmit(handleSave)}>
-          <DialogTitle>Subscribe</DialogTitle>
+          <DialogTitle>Edit Category</DialogTitle>
           <DialogContent>
-            <DialogContentText>Enter a new category name!</DialogContentText>
             <TextField
               {...register('name')}
               autoFocus
@@ -59,4 +64,4 @@ const AddCategory = () => {
   );
 };
 
-export default AddCategory;
+export default EditCategory;
