@@ -28,16 +28,34 @@ export const getAllSlogansByCategory = async (req: Request, res: Response) => {
   .catch((error) => { res.status(500).json({ error }) })
 };
 
-export const addSlogan = (req: Request, res: Response) => {
-  const slogan = new Slogan({
-    id: new mongoose.Types.ObjectId(),
-    ...req.body
-  })
+export const addSlogan = async (req: Request, res: Response) => {
+  const { name } = req.body;
 
-  return slogan.save()
-    .then((slogan) => { res.status(201).json( slogan ) })
-    .catch((error) => { res.status(500).json( error ) })
+  const cat = await SloganSchema.findOne({ name }); // Check if slogan with the same name already exists
+  if (cat) {
+    return res.status(403).json({ error: 'Slogan already exists' });
+  } else {
+    const slogan = new Slogan({
+      id: new mongoose.Types.ObjectId(),
+      ...req.body
+    })
+
+    return slogan.save()
+      .then((slogan) => { res.status(201).json(slogan); })
+      .catch((error) => { res.status(500).json(error); });
+  }
 };
+
+// export const addSlogan = (req: Request, res: Response) => {
+//   const slogan = new Slogan({
+//     id: new mongoose.Types.ObjectId(),
+//     ...req.body
+//   })
+
+//   return slogan.save()
+//     .then((slogan) => { res.status(201).json( slogan ) })
+//     .catch((error) => { res.status(500).json( error ) })
+// };
 
 export const updateSlogan = (req: Request, res: Response) => {
   const slogan = new Slogan({

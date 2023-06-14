@@ -4,17 +4,24 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField
+  TextField,
+  Typography
 } from '@mui/material';
 import { useState } from 'react';
 import { useAddCategoryMutation } from '../../../../feature/services/categoryApi';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Category } from '../../../../feature/services/types/Category';
 import AddIcon from '@mui/icons-material/Add';
+import { ErrorMessage } from '@hookform/error-message';
 
 const AddCategory = () => {
   const [addCategory] = useAddCategoryMutation();
-  const { register, handleSubmit } = useForm<Category>();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors }
+  } = useForm<Category>();
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -26,8 +33,13 @@ const AddCategory = () => {
   };
 
   const handleSave: SubmitHandler<Category> = (category: Category) => {
-    setOpen(false);
-    addCategory(category);
+    addCategory(category)
+      .unwrap()
+      .then(() => setOpen(false))
+      .catch((error) => {
+        console.log(error.data.error);
+        setError('name', { type: 'custom', message: error.data.error });
+      });
   };
 
   return (
@@ -46,6 +58,12 @@ const AddCategory = () => {
               label="Category Name"
               fullWidth
               variant="outlined"
+              error={errors.name ? true : false}
+            />
+            <ErrorMessage
+              errors={errors}
+              name="name"
+              render={({ message }) => <Typography color="error">{message}</Typography>}
             />
           </DialogContent>
           <DialogActions>

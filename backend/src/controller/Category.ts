@@ -17,16 +17,35 @@ export const getCategories = (req: Request, res: Response) => {
   .catch((error) => { res.status(500).json({ error }) })
 };
 
-export const addCategory = (req: Request, res: Response) => {
-  const category = new Category({
-    id: new mongoose.Types.ObjectId(),
-    ...req.body
-  })
+export const addCategory = async (req: Request, res: Response) => {
+  const { name } = req.body;
 
-  return category.save()
-    .then((category) => { res.status(201).json( category ) })
-    .catch((error) => { res.status(500).json( error ) })
+  const cat = await CategorySchema.findOne({ name }); // Check if category with the same name already exists
+  if (cat) {
+    return res.status(403).json({ error: 'Category already exists' });
+  } else {
+    const category = new Category({
+      id: new mongoose.Types.ObjectId(),
+      ...req.body
+    })
+
+    return category.save()
+      .then((category) => { res.status(201).json(category); })
+      .catch((error) => { res.status(500).json(error); });
+  }
 };
+
+
+// export const addCategory = (req: Request, res: Response) => {
+//   const category = new Category({
+//     id: new mongoose.Types.ObjectId(),
+//     ...req.body
+//   })
+
+//   return category.save()
+//     .then((category) => { res.status(201).json( category ) })
+//     .catch((error) => { res.status(500).json( error ) })
+// };
 
 export const updateCategory = (req: Request, res: Response) => {
   const category = new Category({

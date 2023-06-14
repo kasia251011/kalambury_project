@@ -4,7 +4,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField
+  TextField,
+  Typography
 } from '@mui/material';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -12,10 +13,16 @@ import { Slogan } from '../../../../feature/services/types/Slogan';
 import AddIcon from '@mui/icons-material/Add';
 import { useAddSloganMutation } from '../../../../feature/services/sloganApi';
 import { useParams } from 'react-router-dom';
+import { ErrorMessage } from '@hookform/error-message';
 
 const AddSlogan = () => {
   const [addSlogan] = useAddSloganMutation();
-  const { register, handleSubmit } = useForm<Slogan>();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors }
+  } = useForm<Slogan>();
   const [open, setOpen] = useState(false);
   const { id } = useParams<string>();
 
@@ -28,9 +35,17 @@ const AddSlogan = () => {
   };
 
   const handleSave: SubmitHandler<Slogan> = (slogan: Slogan) => {
-    setOpen(false);
     slogan.categoryId = id ?? '';
-    addSlogan(slogan);
+    addSlogan(slogan)
+      .unwrap()
+      .then((res) => {
+        console.log(res);
+        setOpen(false);
+      })
+      .catch((error) => {
+        console.log(error.data.error);
+        setError('name', { type: 'custom', message: error.data.error });
+      });
   };
 
   return (
@@ -49,6 +64,12 @@ const AddSlogan = () => {
               label="Slogan Name"
               fullWidth
               variant="outlined"
+              error={errors.name ? true : false}
+            />
+            <ErrorMessage
+              errors={errors}
+              name="name"
+              render={({ message }) => <Typography color="error">{message}</Typography>}
             />
           </DialogContent>
           <DialogActions>
